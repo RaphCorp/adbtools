@@ -36,8 +36,8 @@ cd RaphCorp
 mkdir ADBTools
 cd ADBTools
 echo Downloading files...
-curl -SLJO https://github.com/Genymobile/scrcpy/releases/download/v3.2/scrcpy-win64-v3.2.zip
-curl -SLJO https://raw.githubusercontent.com/RaphCorp/adbtools/refs/heads/main/Data/Cracks/Cracks.zip
+curl --ssl-no-revoke -SLJO https://github.com/Genymobile/scrcpy/releases/download/v3.2/scrcpy-win64-v3.2.zip
+curl --ssl-no-revoke -SLJO https://raw.githubusercontent.com/RaphCorp/adbtools/refs/heads/main/Data/Cracks/Cracks.zip
 echo Extracting files...
 tar -xf scrcpy-win64-v3.2.zip
 tar -xf Cracks.zip
@@ -57,8 +57,24 @@ goto :start
 :: Utility tools
 :usbNetworkShare
 cls
-color 4
-echo Indev
+echo [Enable USB Network Share]
+echo.
+echo Enabling USB Network Share...
+adb shell svc usb setFunctions rndis
+color 2
+echo Done.
+pause
+goto :start
+
+:usbNetworkShareDisable
+cls
+echo [Disable USB Network Share]
+echo.
+echo Disabling USB Network Share...
+adb shell svc usb setFunctions mtp
+echo.
+color 2
+echo Done.
 pause
 goto :start
 
@@ -132,22 +148,24 @@ echo [1] Open phone screen viewer (Scrcpy)
 echo.
 echo [Utility]
 echo.
-echo [2] Enable USB Network sharing (indev)
-echo [3] Wake up phone and enter password (wake up and unlock phone)
-echo [4] Toggle Wifi Hotspot (phone must be unlocked and on if needed use [3] DO NOT OPEN HOTPOST SETTINGS)
+echo [2] Enable USB Network sharing
+echo [3] Disable USB Network sharing
+echo [4] Wake up phone and enter password (wake up and unlock phone)
+echo [5] Toggle Wifi Hotspot (phone must be unlocked and on if needed use [3] DO NOT OPEN HOTPOST SETTINGS)
 echo.
 echo [Cracks]
 echo.
-echo [5] Install Freecine
-echo [6] Install Spotify (Premium)
+echo [6] Install Freecine
+echo [7] Install Spotify (Premium)
 echo.
 
 set /p tool=" > "
 if /i "%tool%"=="1" cls && color 2 && echo Phone screen opened successfully ! && call scrcpy-noconsole.vbs && pause
 if /i "%tool%"=="2" goto :usbNetworkShare
-if /i "%tool%"=="3" goto :wakeUpAndUnlock
-if /i "%tool%"=="4" goto :toggleHotspot
-if /i "%tool%"=="5" goto :Freecine
-if /i "%tool%"=="6" goto :Spotify
+if /i "%tool%"=="3" goto :usbNetworkShareDisable
+if /i "%tool%"=="4" goto :wakeUpAndUnlock
+if /i "%tool%"=="5" goto :toggleHotspot
+if /i "%tool%"=="6" goto :Freecine
+if /i "%tool%"=="7" goto :Spotify
 
 goto :start
